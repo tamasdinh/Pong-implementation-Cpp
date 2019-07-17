@@ -2,7 +2,7 @@
 #include "Game.h"
 
 int main(int argc, char** argv) {
-    Game game;
+    Game game(1024, 700);
     bool success = game.Initialize();
     if (success)
         game.GameLoop();

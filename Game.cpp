@@ -5,6 +5,12 @@
 #include <iostream>
 #include "Game.h"
 
+Game::Game(unsigned short int windowSizeX, unsigned short int windowSizeY) :
+        _windowSizeX(windowSizeX),
+        _windowSizeY(windowSizeY),
+        ball1(new Ball),
+        paddle1(new Paddle(300.0f, windowSizeX, windowSizeY)) {};
+
 bool Game::Initialize() {
     // Initializing graphics functions
     int sdlInitializeResult = SDL_Init(SDL_INIT_VIDEO);     // initializing SDL with video only
@@ -15,7 +21,7 @@ bool Game::Initialize() {
     }
 
     // Initializing game window
-    mWindow = SDL_CreateWindow("Ping Pong in C++ - first game implemented by Tamas Dinh", 100, 100, 1024, 700, 0);
+    mWindow = SDL_CreateWindow("Ping Pong in C++ - first game implemented by Tamas Dinh", 100, 100, _windowSizeX, _windowSizeY, 0);
         // a note to window settings: x, y sets top left coordinates; w, h sets size; flags 0 - window deliberately not set to full-screen in this case.
     if (mWindow == nullptr) {
         SDL_Log("Game window initialization failed! Error message: %s", SDL_GetError());
@@ -128,3 +134,4 @@ void Game::GenerateOutput() {
 
     SDL_RenderPresent(mRenderer);   // swap front and back buffers
 }
+

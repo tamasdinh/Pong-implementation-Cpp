@@ -7,7 +7,7 @@
 
 class Game {
     public:
-        Game(): ball1(new Ball), paddle1(new Paddle(300.0f)) {};     // constructor
+        Game(unsigned short int windowSizeX, unsigned short int windowSizeY);     // constructor
         bool Initialize();  // game initialization steps
         void GameLoop();    // main loop to perform continuous looping while game is running
         void ShutDownGame();    // shutting down game when exit key is pressed
@@ -22,6 +22,8 @@ class Game {
 
         SDL_Window* mWindow;    // pointer to window instance initialized with SDL
         SDL_Renderer* mRenderer;    // pointer to SDL renderer object
+        unsigned short int _windowSizeX;
+        unsigned short int _windowSizeY;
 
         const Uint8* state;
 

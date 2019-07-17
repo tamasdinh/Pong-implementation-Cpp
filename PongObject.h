@@ -28,8 +28,11 @@ class PongObject {
         void setPosition(float x, float y);
         unsigned short int getThickness() const { return _thickness; };
         virtual void draw() const = 0;
+        void setWindowLimits(unsigned short int, unsigned short int);
 
     protected:
+        unsigned short int _windowLimitX;
+        unsigned short int _windowLimitY;
         XYPosition _position;
         unsigned short int _length;
         unsigned short int _thickness;
