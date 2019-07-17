@@ -13,6 +13,6 @@ find_package(SDL2 REQUIRED)
 #    message(STATUS "${_var} = ${${_var}}")
 #endforeach()
 
-add_executable(26_Pong_Cpp main.cpp Game.h Game.cpp)
+add_executable(26_Pong_Cpp main.cpp Game.h Game.cpp Paddle.cpp Paddle.h PongObject.cpp PongObject.h Ball.cpp Ball.h)
 
 target_link_libraries(26_Pong_Cpp ${SDL2_LIBRARIES})
