@@ -18,7 +18,7 @@ class Ball : public PongObject {
                 _hasBounced(false),
                 _acceleration(0.02) {};
 
-        void updatePosition(float &deltaTime, unsigned short int &wallThickness, const std::shared_ptr<Paddle>& paddle);
+        void updatePosition(float &deltaTime, unsigned short int &wallThickness, float &paddlePositionY, unsigned short int &paddleLength);
         bool* hasBounced();
         bool ballOut();
         void resetVelocity();

@@ -14,7 +14,7 @@ void Ball::resetVelocity() {
     _velocityY = _startVelocityY;
 }
 
-void Ball::updatePosition(float &deltaTime, unsigned short int &wallThickness, const std::shared_ptr<Paddle>& paddle) {
+void Ball::updatePosition(float &deltaTime, unsigned short int &wallThickness, float &paddlePositionY, unsigned short int &paddleLength) {
     // Business as usual ball travel
     _position.x += _velocityX * deltaTime;
     _position.y += _velocityY * deltaTime;
@@ -41,8 +41,8 @@ void Ball::updatePosition(float &deltaTime, unsigned short int &wallThickness, c
     // Handling bouncing off paddle
     if (_position.x <= static_cast<float>(wallThickness) &&
         _velocityX < 0 &&
-        _position.y <= paddle->getPosition()->y + static_cast<float>(*(paddle->getLength())) / 2 &&
-        _position.y >= paddle->getPosition()->y - static_cast<float>(*(paddle->getLength())) / 2
+        _position.y <= paddlePositionY + paddleLength / 2 &&
+        _position.y >= paddlePositionY - paddleLength / 2
         ) {
         _velocityX *= -(1 + _acceleration);
         _hasBounced = true;

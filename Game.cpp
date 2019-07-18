@@ -98,7 +98,7 @@ void Game::UpdateGame() {
     paddle1->changePaddlePosition(state[SDL_SCANCODE_W], state[SDL_SCANCODE_S], deltaTime);
 
     // Implementing ball movements
-    ball1->updatePosition(deltaTime, _wallThickness, paddle1);
+    ball1->updatePosition(deltaTime, _wallThickness, paddle1->getPosition()->y, *(paddle1->getLength()));
     if (ball1->ballOut()) {
         _score -= 10;
         std::cout << "\nBALL OUT!!! Score decremented by 10pts --" << " SCORE: " << _score << "\n" << std::endl;
