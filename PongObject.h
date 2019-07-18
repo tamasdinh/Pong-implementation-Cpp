@@ -26,10 +26,11 @@ class PongObject {
             };
         ~PongObject() {};
 
-        XYPosition* getPosition();
-        SDL_Rect* getDrawingObject();
         void updateDrawingObject();
         void switchColor();
+
+        XYPosition* getPosition();
+        SDL_Rect* getDrawingObject();
         std::vector<unsigned short int> getColor();
 
         unsigned short int* getLength();
