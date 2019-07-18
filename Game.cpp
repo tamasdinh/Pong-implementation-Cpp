@@ -109,6 +109,10 @@ void Game::UpdateGame() {
         std::cout << "BOUNCE!!! Score incremented by 1pts --" << " SCORE: " << _score << std::endl;
     }
 
+    // Updating drawing objects in Paddle and Ball
+    paddle1->updateDrawingObject();
+    ball1->updateDrawingObject();
+
 }
 
 void Game::GenerateOutput() {
@@ -134,10 +138,7 @@ void Game::GenerateOutput() {
 
 
     // Drawing ball and paddle
-    paddle1->updateDrawingObject();
     SDL_RenderFillRect(mRenderer, paddle1->getDrawingObject());
-
-    ball1->updateDrawingObject();
     if (_colorSwap)
         ball1->switchColor();
     SDL_SetRenderDrawColor(mRenderer, ball1->getColor()[0], ball1->getColor()[1], ball1->getColor()[2], 255);
