@@ -33,7 +33,7 @@ bool Game::Initialize() {
     }
 
     // Initializing renderer
-    mRenderer = SDL_CreateRenderer(mWindow, -1, SDL_RENDERER_ACCELERATED | SDL_RENDERER_PRESENTVSYNC);
+    mRenderer = SDL_CreateRenderer(mWindow, -1, 0);
     if (mRenderer == nullptr) {
         SDL_Log("Game renderer initialization failed! Error message: %s", SDL_GetError());
         return false;
@@ -82,7 +82,7 @@ void Game::ProcessInput() {
 
 void Game::UpdateGame() {
     // Guarding against too fast refresh
-    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
+//    while (!SDL_TICKS_PASSED(SDL_GetTicks(), mTicksCount + 16));
 
     // Establishing delta time
     float deltaTime = (SDL_GetTicks() - mTicksCount) / 1000.0f;
