@@ -2,7 +2,6 @@
 #define INC_26_PONG_CPP_BALL_H
 
 #include "PongObject.h"
-#include "Paddle.h"
 
 class Ball : public PongObject {
     public:

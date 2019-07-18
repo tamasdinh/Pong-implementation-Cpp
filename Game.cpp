@@ -24,7 +24,7 @@ bool Game::Initialize() {
     }
 
     // Initializing game window
-    mWindow = SDL_CreateWindow("Ping Pong in C++ - first game implemented by Tamas Dinh", 300, 100, _windowSizeX, _windowSizeY, 0);
+    mWindow = SDL_CreateWindow("Pong in C++ - by Tamas Dinh", 300, 100, _windowSizeX, _windowSizeY, 0);
         // a note to window settings: x, y sets top left coordinates; w, h sets size; flags 0 - window deliberately not set to full-screen in this case.
     if (mWindow == nullptr) {
         SDL_Log("Game window initialization failed! Error message: %s", SDL_GetError());
@@ -63,8 +63,6 @@ void Game::GameLoop() {
         GenerateOutput();
     }
 }
-
-// IKEA reklamacio: 2502934
 
 void Game::ProcessInput() {
     // Continuously polling SDL event queue - if window is closed, game quits

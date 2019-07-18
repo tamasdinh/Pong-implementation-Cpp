@@ -1,8 +1,3 @@
-//
-// Created by Tamás Dinh on 2019-07-17.
-//
-
-#include <SDL2/SDL_rect.h>
 #include "Paddle.h"
 
 void Paddle::changePaddlePosition(bool sdlKeyboardStateUp, bool sdlKeyBoardStateDown, float deltaTime) {
