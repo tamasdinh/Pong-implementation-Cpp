@@ -2,12 +2,14 @@
 #define INC_26_PONG_CPP_GAME_H
 
 #include <SDL2/SDL.h>
+#include <iostream>
+#include <thread>
 #include "Ball.h"
 #include "Paddle.h"
 
 class Game {
     public:
-        Game(unsigned short int windowSizeX, unsigned short int windowSizeY);     // constructor
+        Game(unsigned short int windowSizeX, unsigned short int windowSizeY, unsigned short int paddleSize, bool isRightWall);     // constructor
         bool Initialize();  // game initialization steps
         void GameLoop();    // main loop to perform continuous looping while game is running
         void ShutDownGame();    // shutting down game when exit key is pressed
@@ -24,12 +26,18 @@ class Game {
         SDL_Renderer* mRenderer;    // pointer to SDL renderer object
         unsigned short int _windowSizeX;
         unsigned short int _windowSizeY;
+        bool _isRightWall;
+        unsigned short int _wallThickness;
+        long int _score;
+        bool _colorSwap;
+
+        unsigned short int* getWallThickness();
 
         const Uint8* state;
 
         Uint32 mTicksCount;     // var to save elapsed game time
 
-        std::shared_ptr<Ball> ball1;       // declaring ball1 as a private member of game TODO: expand this to have a vector of balls?
+        std::shared_ptr<Ball> ball1;       // declaring ball1 as a private member of game
         std::shared_ptr<Paddle> paddle1;   // declaring paddle1 as written above
 };
 

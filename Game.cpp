@@ -2,14 +2,17 @@
  * This source file implements the procedures for the Game class.
  */
 
-#include <iostream>
 #include "Game.h"
 
-Game::Game(unsigned short int windowSizeX, unsigned short int windowSizeY) :
+Game::Game(unsigned short int windowSizeX, unsigned short int windowSizeY, unsigned short int paddleSize, bool isRightWall) :
         _windowSizeX(windowSizeX),
         _windowSizeY(windowSizeY),
-        ball1(new Ball),
-        paddle1(new Paddle(300.0f, windowSizeX, windowSizeY)) {};
+        _isRightWall(isRightWall),
+        _wallThickness(15),
+        _score(0),
+        _colorSwap(false),
+        ball1(new Ball(windowSizeX, windowSizeY, _wallThickness, 200.0f, 250.0f)),
+        paddle1(new Paddle(windowSizeX, windowSizeY, _wallThickness, 300.0f, paddleSize)) {};
 
 bool Game::Initialize() {
     // Initializing graphics functions
@@ -21,7 +24,7 @@ bool Game::Initialize() {
     }
 
     // Initializing game window
-    mWindow = SDL_CreateWindow("Ping Pong in C++ - first game implemented by Tamas Dinh", 100, 100, _windowSizeX, _windowSizeY, 0);
+    mWindow = SDL_CreateWindow("Ping Pong in C++ - first game implemented by Tamas Dinh", 300, 100, _windowSizeX, _windowSizeY, 0);
         // a note to window settings: x, y sets top left coordinates; w, h sets size; flags 0 - window deliberately not set to full-screen in this case.
     if (mWindow == nullptr) {
         SDL_Log("Game window initialization failed! Error message: %s", SDL_GetError());
@@ -93,9 +96,21 @@ void Game::UpdateGame() {
 
     // Handling paddle movements
     paddle1->changePaddlePosition(state[SDL_SCANCODE_W], state[SDL_SCANCODE_S], deltaTime);
-    std::cout << "Paddle direction: " << paddle1->getPaddleDirection() << std::endl;
-    std::cout << "Paddle position y: " << paddle1->getPosition().y << std::endl;
-    // TODO: limit so that paddle cannot go out of window
+
+    // Implementing ball movements
+    ball1->updatePosition(deltaTime, _wallThickness, paddle1);
+    if (ball1->ballOut()) {
+        _score -= 10;
+        std::cout << "\nBALL OUT!!! Score decremented by 10pts --" << " SCORE: " << _score << "\n" << std::endl;
+        ball1->setPosition(_windowSizeX / 2, _windowSizeY / 2);
+        ball1->resetVelocity();
+        _colorSwap = true;
+    }
+    if (*(ball1->hasBounced())) {
+        _score += 1;
+        std::cout << "BOUNCE!!! Score incremented by 1pts --" << " SCORE: " << _score << std::endl;
+    }
+
 }
 
 void Game::GenerateOutput() {
@@ -106,32 +121,36 @@ void Game::GenerateOutput() {
     const int thickness = 15;
     // Drawing top wall
     SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);  // setting draw color
-    SDL_Rect wallTop {0, 0, 1024, thickness};
+    SDL_Rect wallTop {0, 0, _windowSizeX, thickness};
     SDL_RenderFillRect(mRenderer, &wallTop);
 
     // Drawing bottom wall
-    SDL_SetRenderDrawColor(mRenderer, 255, 255, 255, 255);  // setting draw color
-    SDL_Rect wallBottom {0, 685, 1024, thickness};
+    SDL_Rect wallBottom {0, _windowSizeY - thickness, _windowSizeX, thickness};
     SDL_RenderFillRect(mRenderer, &wallBottom);
 
+    // Drawing right wall
+    if (_isRightWall) {
+        SDL_Rect wallRight {_windowSizeX - thickness, 0, thickness, _windowSizeY};
+        SDL_RenderFillRect(mRenderer, &wallRight);
+    }
+
+
     // Drawing ball and paddle
-    SDL_Rect ball {
-            static_cast<int>(512 - thickness / 2),
-            static_cast<int>(350 - thickness / 2),
-            thickness,
-            thickness
-    };
+    paddle1->updateDrawingObject();
+    SDL_RenderFillRect(mRenderer, paddle1->getDrawingObject());
 
-    SDL_Rect paddle {
-            static_cast<int>(8 - thickness / 2),
-            static_cast<int>(paddle1->getPosition().y - paddle1->getLength() / 2),
-            thickness,
-            paddle1->getLength()
-    };
-
-    SDL_RenderFillRect(mRenderer, &ball);
-    SDL_RenderFillRect(mRenderer, &paddle);
+    ball1->updateDrawingObject();
+    if (_colorSwap)
+        ball1->switchColor();
+    SDL_SetRenderDrawColor(mRenderer, ball1->getColor()[0], ball1->getColor()[1], ball1->getColor()[2], 255);
+    SDL_RenderFillRect(mRenderer, ball1->getDrawingObject());
 
     SDL_RenderPresent(mRenderer);   // swap front and back buffers
+
+    if (_colorSwap) {
+        std::this_thread::sleep_for(std::chrono::milliseconds(2000));
+        _colorSwap = false;
+    }
 }
 
+unsigned short int* Game::getWallThickness() { return &_wallThickness; }

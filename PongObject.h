@@ -1,7 +1,8 @@
 #ifndef INC_26_PONG_CPP_PONGOBJECT_H
 #define INC_26_PONG_CPP_PONGOBJECT_H
 
-#include <array>
+#include <vector>
+#include <random>
 #include <SDL2/SDL.h>
 
 struct XYPosition {
@@ -9,25 +10,31 @@ struct XYPosition {
     float y;
 };
 
-enum Color {
-    black,
-    white,
-    red,
-    green,
-};
-
 class PongObject {
     public:
-        PongObject(): _thickness(15), _length(15), _position(), _color(white) {
-            _position.x = 0;
-            _position.y = 0;
-        };
+        PongObject(unsigned short int &windowLimitX, unsigned short int &windowLimitY, unsigned short int &wallThickness):
+            _thickness(wallThickness),
+            _length(wallThickness),
+            _position({static_cast<float>(windowLimitX) / 2, static_cast<float>(windowLimitY) / 2}),
+            _windowLimitX(windowLimitX),
+            _windowLimitY(windowLimitY),
+            _color({255, 255, 255}) {
+                _drawingObject.x = _position.x - static_cast<float>(_thickness) / 2;
+                _drawingObject.y = _position.y - static_cast<float>(_length) / 2;
+                _drawingObject.w = _thickness;
+                _drawingObject.h = _length;
+            };
         ~PongObject() {};
-        XYPosition getPosition() const { return _position; };
-        unsigned short int getLength() const { return _length; };
+
+        XYPosition* getPosition();
+        SDL_Rect* getDrawingObject();
+        void updateDrawingObject();
+        void switchColor();
+        std::vector<unsigned short int> getColor();
+
+        unsigned short int* getLength();
+        unsigned short int* getThickness();
         void setPosition(float x, float y);
-        unsigned short int getThickness() const { return _thickness; };
-        virtual void draw() const = 0;
         void setWindowLimits(unsigned short int, unsigned short int);
 
     protected:
@@ -36,7 +43,8 @@ class PongObject {
         XYPosition _position;
         unsigned short int _length;
         unsigned short int _thickness;
-        Color _color;
+        std::vector<unsigned short int> _color;
+        SDL_Rect _drawingObject;
 };
 
 #endif //INC_26_PONG_CPP_PONGOBJECT_H
