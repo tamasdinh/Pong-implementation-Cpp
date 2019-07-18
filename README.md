@@ -87,9 +87,10 @@ factored into separate classes with an efficient inheritance structure.
 <h2>4. Methodological notes</h2>
 
 >___NOTE:___ I made 2 small modifications to the code, in order for it to be able to run on a Linux remote VM:
-    >- I changed renderer options from SDL_RENDERER_ACCELERATED to 0 (system chooses) as the Linux remote machine came back with "Cannot find suitable renderer" error
-    >- I commented out the line in ```Game::UpdateGame()``` in which I am guarding against too fast execution compared to the frame rate of the machine.
-    >- The two changes above enabled the remote Linux VM to run the program, albeit with a little lagging
+    
+    - I changed renderer options from SDL_RENDERER_ACCELERATED to 0 (system chooses) as the Linux remote machine came back with "Cannot find suitable renderer" error
+    - I commented out the line in ```Game::UpdateGame()``` in which I am guarding against too fast execution compared to the frame rate of the machine.
+    - The two changes above enabled the remote Linux VM to run the program, albeit with a little lagging
 
 - ___```Loops, function, I/O```:___
     - The app utilizes a main while loop for the implementation of the ```game loop``` and certainly there are a number of ```if``` statements governing the logic of the app.
